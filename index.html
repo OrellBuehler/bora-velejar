@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Bora Velejar</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0A8583">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Bora Velejar">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px;font-family:system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+/* Layout: single narrow column, sticky segmented tabs, one tool per tab; lagoon-water palette */
+:root{
+  --bg:#EFF5F4; --surface:#FFFFFF; --ink:#0F2A30; --muted:#587075; --line:#D3E1DF;
+  --accent:#0A8583; --accent-ink:#FFFFFF; --accent-soft:#DCEFEC; --sun:#E5AE00; --sun-soft:#FBF0CC;
+  --good:#1D8548; --good-soft:#DDF2E4; --bad:#BE3B34; --bad-soft:#F8E1DF;
+  --f-display:"Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0A171B; --surface:#11252B; --ink:#E4F0EF; --muted:#8EA7AA; --line:#213D43;
+  --accent:#3FC6BE; --accent-ink:#06201F; --accent-soft:#143A3B; --sun:#F2C94C; --sun-soft:#3A3315;
+  --good:#52C584; --good-soft:#153826; --bad:#F06D63; --bad-soft:#40201E; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0A171B; --surface:#11252B; --ink:#E4F0EF; --muted:#8EA7AA; --line:#213D43;
+  --accent:#3FC6BE; --accent-ink:#06201F; --accent-soft:#143A3B; --sun:#F2C94C; --sun-soft:#3A3315;
+  --good:#52C584; --good-soft:#153826; --bad:#F06D63; --bad-soft:#40201E; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5}
+.wrap{max-width:720px;margin:0 auto;padding-inline:16px;padding-block:20px 48px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,select:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+
+/* Header */
+header{position:relative;padding-block:8px 18px}
+header .eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+header h1{font-size:clamp(40px,11vw,68px);font-weight:800;line-height:.95;letter-spacing:-.02em;margin-top:6px}
+header h1 em{font-style:normal;color:var(--accent)}
+header p{margin:10px 0 0;color:var(--muted);max-width:52ch}
+.wind{position:absolute;right:0;top:0;width:120px;height:80px;color:var(--accent);opacity:.55;pointer-events:none}
+
+/* Tabs */
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:8px;margin-bottom:14px}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px}
+.tabs button{border:0;background:none;border-radius:999px;padding:9px 4px;font-weight:700;font-size:14px;color:var(--muted)}
+.tabs button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+
+section[role="tabpanel"]{display:flex;flex-direction:column;gap:14px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.lbl{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-size:14px;font-weight:700}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn{border:0;border-radius:12px;padding:12px 18px;font-weight:700;background:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:var(--surface);color:var(--ink);border:1px solid var(--line)}
+.btn:disabled{opacity:.45;cursor:default}
+.say{border:1px solid var(--line);background:var(--surface);border-radius:999px;width:38px;height:38px;display:inline-grid;place-items:center;flex:none;color:var(--accent)}
+.say svg{width:18px;height:18px}
+
+/* Quiz */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.meter{display:flex;justify-content:space-between;font-variant-numeric:tabular-nums;font-size:14px;color:var(--muted);font-weight:700}
+.bar{height:6px;background:var(--accent-soft);border-radius:6px;overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.prompt{display:flex;align-items:center;gap:12px;justify-content:space-between;margin-block:18px 16px}
+.prompt h2{font-size:clamp(28px,8vw,40px);font-weight:800;line-height:1.1;min-width:0;overflow-wrap:anywhere}
+.cat-tag{font-size:12px;font-weight:700;color:var(--muted)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:420px){.opts{grid-template-columns:1fr}}
+.opt{border:1.5px solid var(--line);background:var(--bg);border-radius:12px;padding:14px;text-align:left;font-size:17px;font-weight:700;min-width:0;overflow-wrap:anywhere}
+.opt.good{border-color:var(--good);background:var(--good-soft)}
+.opt.bad{border-color:var(--bad);background:var(--bad-soft)}
+.opt:disabled{cursor:default}
+.feedback{margin-top:14px;min-height:24px;font-weight:700}
+.feedback .note{display:block;font-weight:400;color:var(--muted);font-size:14px;margin-top:2px}
+.result{text-align:center;padding-block:28px}
+.result .big{font-family:var(--f-display);font-size:64px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.review{display:flex;flex-direction:column;gap:6px;margin-top:16px;text-align:left}
+.review div{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:6px}
+.review b{color:var(--accent)}
+
+/* Phrases */
+.plist{display:flex;flex-direction:column;gap:10px}
+.phrase{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:flex;gap:12px;align-items:flex-start}
+.phrase > div{min-width:0;flex:1}
+.phrase .pt{font-size:18px;font-weight:700}
+.phrase .en{color:var(--muted)}
+.phrase .note{font-size:14px;margin-top:6px;padding:6px 10px;border-radius:8px;background:var(--sun-soft)}
+.hide-en .phrase .en{filter:blur(6px);cursor:pointer;user-select:none}
+.hide-en .phrase .en.show{filter:none}
+.toggle{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700}
+.toggle input{width:20px;height:20px;accent-color:var(--accent)}
+
+/* Builder */
+.target{min-height:64px;border:2px dashed var(--line);border-radius:12px;padding:10px;display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start}
+.target.good{border-style:solid;border-color:var(--good);background:var(--good-soft)}
+.target.bad{border-style:solid;border-color:var(--bad);background:var(--bad-soft)}
+.pool{display:flex;flex-wrap:wrap;gap:8px;min-height:44px}
+.tok{border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:8px 12px;font-size:17px;font-weight:700}
+.target .tok{background:var(--surface)}
+.en-prompt{font-size:22px;font-family:var(--f-display);font-weight:600;margin-block:4px 14px}
+
+/* Basics */
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.sound{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
+.sound .k{font-family:var(--f-display);font-size:26px;font-weight:800;color:var(--accent)}
+.sound p{margin:4px 0 0;font-size:15px}
+.sound .ex{color:var(--muted);font-size:14px;margin-top:6px}
+.tbl-wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:9px 14px;border-bottom:1px solid var(--line)}
+tr:last-child td{border-bottom:0}
+th{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+td.num{font-variant-numeric:tabular-nums;font-weight:700;width:60px}
+.tips{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none}
+.tips li{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 16px}
+.tips b{color:var(--accent)}
+h3{font-size:20px;font-weight:800;margin-top:10px}
+.hint{font-size:13px;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <svg class="wind" viewBox="0 0 120 80" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+      <path d="M8 22h62c10 0 14-12 6-16"/><path d="M4 40h92c12 0 16 14 6 18"/><path d="M20 58h46"/>
+    </svg>
+    <div class="eyebrow">Português do Brasil</div>
+    <h1>Bora <em>velejar.</em></h1>
+    <p>Words, phrases and sentence drills for travelling Brazil and getting on the water. Tap the speaker to hear Brazilian pronunciation.</p>
+  </header>
+
+  <nav>
+    <div class="tabs" role="tablist">
+      <button role="tab" id="t-quiz" aria-selected="true" aria-controls="p-quiz">Quiz</button>
+      <button role="tab" id="t-phr" aria-selected="false" aria-controls="p-phr">Frases</button>
+      <button role="tab" id="t-build" aria-selected="false" aria-controls="p-build">Montar</button>
+      <button role="tab" id="t-basic" aria-selected="false" aria-controls="p-basic">Básico</button>
+    </div>
+  </nav>
+
+  <!-- QUIZ -->
+  <section role="tabpanel" id="p-quiz" aria-labelledby="t-quiz">
+    <div class="row" id="q-cats"></div>
+    <div class="row">
+      <span class="lbl">Direction</span>
+      <button class="chip" id="dir-pt" aria-pressed="true">PT → EN</button>
+      <button class="chip" id="dir-en" aria-pressed="false">EN → PT</button>
+    </div>
+    <div class="card" id="q-card"></div>
+  </section>
+
+  <!-- PHRASES -->
+  <section role="tabpanel" id="p-phr" aria-labelledby="t-phr" hidden>
+    <div class="row" id="p-cats"></div>
+    <label class="toggle"><input type="checkbox" id="hide-en"> Hide English (tap to reveal)</label>
+    <div class="plist" id="plist"></div>
+  </section>
+
+  <!-- BUILDER -->
+  <section role="tabpanel" id="p-build" aria-labelledby="t-build" hidden>
+    <div class="card">
+      <div class="meter"><span>Build the sentence in Portuguese</span><span id="b-score">0 / 0</span></div>
+      <div class="en-prompt" id="b-en"></div>
+      <div class="target" id="b-target" aria-label="Your sentence"></div>
+      <p class="hint">Tap words to add them. Tap a placed word to remove it.</p>
+      <div class="pool" id="b-pool"></div>
+      <div class="feedback" id="b-fb"></div>
+      <div class="row" style="margin-top:12px">
+        <button class="btn" id="b-check">Check</button>
+        <button class="btn ghost" id="b-next">Next sentence</button>
+        <button class="say" id="b-say" aria-label="Hear the sentence"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- BASICS -->
+  <section role="tabpanel" id="p-basic" aria-labelledby="t-basic" hidden>
+    <h3>Sounds Duolingo skips</h3>
+    <div class="grid2" id="sounds"></div>
+    <h3>Grammar in 7 lines</h3>
+    <ul class="tips">
+      <li><b>você</b> = you. It takes the same verb form as he/she: <i>você fala</i>, <i>ele fala</i>. Nobody in most of Brazil uses <i>tu falas</i>.</li>
+      <li><b>a gente</b> = we (casual). Also uses he/she form: <i>a gente vai</i> = we're going. Hear it everywhere.</li>
+      <li><b>tá / tô</b> = spoken short forms of <i>está / estou</i>. <i>Tá bom</i> = OK. <i>Tô cansado</i> = I'm tired.</li>
+      <li><b>obrigado / obrigada</b>: men say <i>obrigado</i>, women say <i>obrigada</i>. Same for <i>cansado/a</i>, <i>vegetariano/a</i>.</li>
+      <li><b>ser vs. estar</b>: <i>ser</i> for identity (<i>Eu sou iniciante</i>), <i>estar</i> for states and conditions (<i>O vento está forte</i>).</li>
+      <li><b>Tem…?</b> = Is there…? / Do you have…? The fastest question in Brazil: <i>Tem água?</i> <i>Tem pedras aqui?</i></li>
+      <li><b>Pode…?</b> = Can you…? Polite request pattern: <i>Pode repetir?</i> <i>Pode me ajudar?</i></li>
+    </ul>
+    <h3>Numbers for wind and gear</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Português</th><th>Use</th><th></th></tr></thead>
+        <tbody id="nums"></tbody>
+      </table>
+    </div>
+    <p class="hint">Brazilians often say <i>meia</i> instead of <i>seis</i> when reading out phone numbers.</p>
+  </section>
+</div>
+
+<script>
+const SPK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg>';
+
+/* ---------- Data ---------- */
+const WORDS={
+ "Basics":[
+  ["olá","hello"],["oi","hi"],["tchau","bye"],["obrigado / obrigada","thank you"],["por favor","please"],
+  ["de nada","you're welcome"],["desculpa","sorry"],["com licença","excuse me"],["sim","yes"],["não","no"],
+  ["tudo bem?","how are you? / all good?"],["bom dia","good morning"],["boa tarde","good afternoon"],
+  ["boa noite","good evening / night"],["não entendo","I don't understand"],["devagar","slowly"]],
+ "Travel":[
+  ["aeroporto","airport"],["passagem","ticket"],["mala","suitcase"],["pousada","guesthouse"],["quarto","room"],
+  ["chave","key"],["praia","beach"],["ônibus","bus"],["banheiro","bathroom"],["farmácia","pharmacy"],
+  ["dinheiro","money"],["cartão","card"],["rua","street"],["perto","near"],["longe","far"],
+  ["esquerda","left"],["direita","right"],["hoje","today"],["amanhã","tomorrow"],["reserva","reservation"]],
+ "Food":[
+  ["água","water"],["água de coco","coconut water"],["cerveja","beer"],["suco","juice"],["café","coffee"],
+  ["a conta","the bill"],["peixe","fish"],["frango","chicken"],["carne","meat / beef"],["arroz","rice"],
+  ["feijão","beans"],["gelo","ice"],["sem açúcar","without sugar"],["garçom","waiter"],["cardápio","menu"]],
+ "Kitesurf":[
+  ["vento","wind"],["prancha","board"],["trapézio","harness"],["barra","control bar"],["linhas","lines"],
+  ["onda","wave"],["maré","tide"],["maré alta","high tide"],["maré baixa","low tide"],["correnteza","current"],
+  ["lagoa","lagoon"],["rajada","gust"],["nós","knots"],["forte","strong"],["fraco","weak"],
+  ["vento terral","offshore wind"],["aluguel","rental"],["aula","lesson"],["quilha","fin"],["bomba","pump"],
+  ["pedras","rocks"],["água rasa","shallow water"],["perigo","danger"],["socorro!","help!"],
+  ["decolar","to launch (the kite)"],["pousar","to land (the kite)"],["velejar","to ride / sail"]],
+ "Numbers":[
+  ["um / uma","1"],["dois / duas","2"],["três","3"],["quatro","4"],["cinco","5"],["seis","6"],["sete","7"],
+  ["oito","8"],["nove","9"],["dez","10"],["doze","12"],["quinze","15"],["vinte","20"],["trinta","30"],
+  ["cem","100"],["mil","1000"]]
+};
+
+const PHRASES=[
+ {c:"Social",pt:"Tudo bem? Tudo ótimo!",en:"How's it going? All great!"},
+ {c:"Social",pt:"Meu nome é …",en:"My name is …"},
+ {c:"Social",pt:"De onde você é?",en:"Where are you from?"},
+ {c:"Social",pt:"Eu falo um pouco de português.",en:"I speak a little Portuguese."},
+ {c:"Social",pt:"Você fala inglês?",en:"Do you speak English?"},
+ {c:"Social",pt:"Pode falar mais devagar, por favor?",en:"Can you speak more slowly, please?"},
+ {c:"Social",pt:"Pode repetir?",en:"Can you repeat that?"},
+ {c:"Social",pt:"Como se diz … em português?",en:"How do you say … in Portuguese?"},
+ {c:"Travel",pt:"Quanto custa?",en:"How much is it?"},
+ {c:"Travel",pt:"Onde fica o banheiro?",en:"Where is the bathroom?"},
+ {c:"Travel",pt:"Eu tenho uma reserva.",en:"I have a reservation."},
+ {c:"Travel",pt:"Tem quarto disponível para hoje?",en:"Do you have a room available for tonight?"},
+ {c:"Travel",pt:"A que horas sai o ônibus para Jericoacoara?",en:"What time does the bus to Jericoacoara leave?"},
+ {c:"Travel",pt:"Pode chamar um táxi para mim?",en:"Can you call a taxi for me?"},
+ {c:"Travel",pt:"Pode me levar para a praia?",en:"Can you take me to the beach?"},
+ {c:"Travel",pt:"Aceita cartão?",en:"Do you take card?"},
+ {c:"Travel",pt:"É longe daqui?",en:"Is it far from here?"},
+ {c:"Food",pt:"A conta, por favor.",en:"The bill, please."},
+ {c:"Food",pt:"Uma água de coco, por favor.",en:"A coconut water, please."},
+ {c:"Food",pt:"O que você recomenda?",en:"What do you recommend?"},
+ {c:"Food",pt:"Sem gelo, por favor.",en:"No ice, please."},
+ {c:"Food",pt:"Eu sou vegetariano.",en:"I'm vegetarian.",n:"Women say vegetariana."},
+ {c:"Food",pt:"Estava delicioso!",en:"It was delicious!"},
+ {c:"Kitesurf",pt:"Como está o vento hoje?",en:"How's the wind today?",n:"Spoken: Como tá o vento hoje?"},
+ {c:"Kitesurf",pt:"Quantos nós de vento tem agora?",en:"How many knots of wind are there now?"},
+ {c:"Kitesurf",pt:"O vento vai ficar bom à tarde?",en:"Will the wind pick up in the afternoon?"},
+ {c:"Kitesurf",pt:"Quero alugar um kite de doze metros.",en:"I want to rent a 12 m kite."},
+ {c:"Kitesurf",pt:"Quanto custa a aula por hora?",en:"How much is the lesson per hour?"},
+ {c:"Kitesurf",pt:"Eu sou iniciante.",en:"I'm a beginner.",n:"Also: intermediário (intermediate), avançado (advanced)."},
+ {c:"Kitesurf",pt:"Você pode me ajudar a decolar?",en:"Can you help me launch?"},
+ {c:"Kitesurf",pt:"Você pode pousar meu kite?",en:"Can you land my kite?"},
+ {c:"Kitesurf",pt:"A maré está subindo ou descendo?",en:"Is the tide coming in or going out?"},
+ {c:"Kitesurf",pt:"Tem pedras aqui?",en:"Are there rocks here?"},
+ {c:"Kitesurf",pt:"A água é rasa aqui?",en:"Is the water shallow here?"},
+ {c:"Kitesurf",pt:"Onde é seguro velejar?",en:"Where is it safe to ride?"},
+ {c:"Kitesurf",pt:"O vento está forte demais para mim.",en:"The wind is too strong for me."},
+ {c:"Kitesurf",pt:"Minhas linhas estão enroladas.",en:"My lines are tangled."},
+ {c:"Kitesurf",pt:"Onde posso guardar meu equipamento?",en:"Where can I store my gear?"},
+ {c:"Kitesurf",pt:"Quero fazer um downwind amanhã.",en:"I want to do a downwinder tomorrow."},
+ {c:"Kitesurf",pt:"Preciso de ajuda!",en:"I need help!"}
+];
+
+const SOUNDS=[
+ ["ão","Nasal \"owng\", said through the nose.","não · pão · cartão"],
+ ["nh","Like \"ny\" in canyon.","amanhã · banheiro"],
+ ["lh","Like \"lli\" in million.","trabalho · olho"],
+ ["r / rr","At the start of a word or doubled: a soft English h.","Rio · carro · rua"],
+ ["ti / te","t before an i sound becomes \"ch\".","noite · tia · gente"],
+ ["di / de","d before an i sound becomes \"j\".","dia · tarde · cidade"],
+ ["-o","Unstressed final o sounds like \"u\".","obrigado · vento"],
+ ["-e","Unstressed final e sounds like \"i\".","forte · onde"],
+ ["ç","Always an s sound.","açúcar · licença"],
+ ["x","Often \"sh\".","abacaxi · peixe"]
+];
+
+const NUMS=[
+ [8,"oito","light-wind day"],[9,"nove","big kite"],[10,"dez",""],[12,"doze","most common kite size"],
+ [14,"catorze","also spelled quatorze"],[15,"quinze",""],[17,"dezessete","classic Ceará wind"],
+ [20,"vinte",""],[25,"vinte e cinco","strong, small kite"],[30,"trinta","gusty, careful"]
+];
+
+/* ---------- Speech ---------- */
+let ptVoice=null;
+function pickVoice(){try{const v=speechSynthesis.getVoices();ptVoice=v.find(x=>x.lang==="pt-BR")||v.find(x=>/^pt/i.test(x.lang))||null}catch(e){}}
+const canSpeak=typeof window.speechSynthesis!=="undefined";
+if(canSpeak){pickVoice();try{speechSynthesis.onvoiceschanged=pickVoice}catch(e){}}
+function speak(t){
+  if(!canSpeak)return;
+  try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t.replace(/…/g,"").replace(/ \/ .*/,""));
+  u.lang="pt-BR";if(ptVoice)u.voice=ptVoice;u.rate=.85;speechSynthesis.speak(u)}catch(e){}
+}
+function sayBtn(text,label){
+  if(!canSpeak)return null;
+  const b=document.createElement("button");b.className="say";b.innerHTML=SPK;b.setAttribute("aria-label",label||"Hear it");
+  b.addEventListener("click",e=>{e.stopPropagation();speak(typeof text==="function"?text():text)});return b;
+}
+
+/* ---------- Storage ---------- */
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+/* ---------- Tabs ---------- */
+const tabs=[...document.querySelectorAll('[role="tab"]')];
+function openTab(id){tabs.forEach(t=>{const on=t.id===id;t.setAttribute("aria-selected",on);
+  document.getElementById(t.getAttribute("aria-controls")).hidden=!on});store.set("bv-tab",id)}
+tabs.forEach(t=>t.addEventListener("click",()=>openTab(t.id)));
+openTab(store.get("bv-tab","t-quiz"));
+
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const el=(tag,cls,html)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e};
+
+/* ---------- Quiz ---------- */
+const CATS=["All",...Object.keys(WORDS)];
+let qCat=store.get("bv-cat","All"), qDir="pt", round=null;
+const qCatsEl=document.getElementById("q-cats"), qCard=document.getElementById("q-card");
+function renderCats(){qCatsEl.innerHTML="";CATS.forEach(c=>{const b=el("button","chip",c);b.setAttribute("aria-pressed",c===qCat);
+  b.onclick=()=>{qCat=c;store.set("bv-cat",c);renderCats();newRound()};qCatsEl.append(b)})}
+document.getElementById("dir-pt").onclick=()=>setDir("pt");
+document.getElementById("dir-en").onclick=()=>setDir("en");
+function setDir(d){qDir=d;document.getElementById("dir-pt").setAttribute("aria-pressed",d==="pt");
+  document.getElementById("dir-en").setAttribute("aria-pressed",d==="en");newRound()}
+function pool(){return qCat==="All"?Object.entries(WORDS).flatMap(([c,ws])=>ws.map(w=>({pt:w[0],en:w[1],c}))):WORDS[qCat].map(w=>({pt:w[0],en:w[1],c:qCat}))}
+function newRound(){const p=shuffle(pool());round={items:p.slice(0,10),i:0,score:0,missed:[],all:p};showQ()}
+function showQ(){
+  const r=round;qCard.innerHTML="";
+  if(r.i>=r.items.length)return showResult();
+  const w=r.items[r.i];
+  const meter=el("div","meter",`<span>Question ${r.i+1} of ${r.items.length}</span><span>${r.score} correct</span>`);
+  const bar=el("div","bar","<i></i>");bar.firstChild.style.width=(r.i/r.items.length*100)+"%";
+  const prompt=el("div","prompt");
+  const ptxt=el("div",null,`<div class="cat-tag">${w.c}</div><h2>${qDir==="pt"?w.pt:w.en}</h2>`);ptxt.style.minWidth="0";
+  prompt.append(ptxt);if(qDir==="pt"){const s=sayBtn(w.pt,"Hear the word");if(s)prompt.append(s)}
+  const same=WORDS[w.c].map(x=>({pt:x[0],en:x[1]})).filter(x=>x.pt!==w.pt);
+  const dist=shuffle(same).slice(0,3);
+  const opts=shuffle([w,...dist]);
+  const grid=el("div","opts"), fb=el("div","feedback");
+  opts.forEach(o=>{const b=el("button","opt",qDir==="pt"?o.en:o.pt);
+    b.onclick=()=>{
+      const ok=o.pt===w.pt;
+      [...grid.children].forEach((x,k)=>{x.disabled=true;if(opts[k].pt===w.pt)x.classList.add("good")});
+      if(ok){r.score++;fb.innerHTML=`<span style="color:var(--good)">Certo!</span>`}
+      else{b.classList.add("bad");r.missed.push(w);fb.innerHTML=`<span style="color:var(--bad)">Quase.</span> <span class="note">${w.pt} = ${w.en}</span>`}
+      speak(w.pt);
+      const nx=el("button","btn",r.i+1<r.items.length?"Next":"See result");nx.style.marginTop="14px";
+      nx.onclick=()=>{r.i++;showQ()};qCard.append(nx);nx.focus();
+    };grid.append(b)});
+  qCard.append(meter,bar,prompt,grid,fb);
+}
+function showResult(){
+  const r=round;const best=store.get("bv-best",{});const key=qCat+"-"+qDir;
+  if(!best[key]||r.score>best[key]){best[key]=r.score;store.set("bv-best",best)}
+  const box=el("div","result",`<div class="lbl">${qCat} · ${qDir==="pt"?"PT → EN":"EN → PT"}</div>
+    <div class="big">${r.score}/${r.items.length}</div><p>${r.score===r.items.length?"Perfeito! Tá voando.":r.score>=7?"Muito bem!":"Bora de novo!"} Best: ${best[key]}/10</p>`);
+  if(r.missed.length){const rv=el("div","review");rv.append(el("div","lbl","Review these"));
+    r.missed.forEach(m=>rv.append(el("div",null,`<b>${m.pt}</b><span>${m.en}</span>`)));box.append(rv)}
+  const again=el("button","btn","New round");again.style.marginTop="18px";again.onclick=newRound;box.append(again);
+  qCard.append(box);
+}
+renderCats();newRound();
+
+/* ---------- Phrases ---------- */
+const PCATS=["All","Social","Travel","Food","Kitesurf"];let pCat="All";
+const pCatsEl=document.getElementById("p-cats"), plist=document.getElementById("plist");
+function renderPCats(){pCatsEl.innerHTML="";PCATS.forEach(c=>{const b=el("button","chip",c);b.setAttribute("aria-pressed",c===pCat);
+  b.onclick=()=>{pCat=c;renderPCats();renderPhrases()};pCatsEl.append(b)})}
+function renderPhrases(){plist.innerHTML="";PHRASES.filter(p=>pCat==="All"||p.c===pCat).forEach(p=>{
+  const card=el("div","phrase");const body=el("div");
+  body.append(el("div","pt",p.pt));const en=el("div","en",p.en);en.onclick=()=>en.classList.toggle("show");body.append(en);
+  if(p.n)body.append(el("div","note",p.n));
+  const s=sayBtn(p.pt,"Hear the phrase");if(s)card.append(s);card.append(body);plist.append(card)})}
+const hideEn=document.getElementById("hide-en");
+hideEn.onchange=()=>plist.classList.toggle("hide-en",hideEn.checked);
+renderPCats();renderPhrases();
+
+/* ---------- Builder ---------- */
+const BPOOL=PHRASES.filter(p=>!p.pt.includes("…")&&!p.pt.includes("! ")).map(p=>({...p,toks:p.pt.replace(/[.,!?¿]/g,"").split(" ")}))
+  .filter(p=>p.toks.length>=3&&p.toks.length<=8);
+let bCur=null,bPlaced=[],bLeft=[],bTotal=0,bRight=0,bDone=false;
+const bEn=document.getElementById("b-en"),bT=document.getElementById("b-target"),bP=document.getElementById("b-pool"),bFb=document.getElementById("b-fb");
+const bSay=document.getElementById("b-say");
+if(canSpeak){bSay.innerHTML=SPK;bSay.onclick=()=>bCur&&speak(bCur.pt)}else bSay.hidden=true;
+function nextB(){let n;do{n=BPOOL[Math.floor(Math.random()*BPOOL.length)]}while(BPOOL.length>1&&n===bCur);
+  bCur=n;bDone=false;bPlaced=[];
+  let s;do{s=shuffle(n.toks.map((t,i)=>({t,i})))}while(n.toks.length>1&&s.map(x=>x.t).join(" ")===n.toks.join(" "));
+  bLeft=s;bFb.innerHTML="";bT.className="target";renderB()}
+function renderB(){bEn.textContent=bCur.en;bT.innerHTML="";bP.innerHTML="";
+  bPlaced.forEach((o,k)=>{const b=el("button","tok",o.t);b.disabled=bDone;b.onclick=()=>{bPlaced.splice(k,1);bLeft.push(o);renderB()};bT.append(b)});
+  bLeft.forEach((o,k)=>{const b=el("button","tok",o.t);b.disabled=bDone;b.onclick=()=>{bLeft.splice(k,1);bPlaced.push(o);renderB()};bP.append(b)});
+  document.getElementById("b-check").disabled=bDone||bLeft.length>0;
+  document.getElementById("b-score").textContent=`${bRight} / ${bTotal}`}
+document.getElementById("b-check").onclick=()=>{
+  const ok=bPlaced.map(o=>o.t.toLowerCase()).join(" ")===bCur.toks.map(t=>t.toLowerCase()).join(" ");
+  bTotal++;if(ok)bRight++;bDone=true;bT.className="target "+(ok?"good":"bad");
+  bFb.innerHTML=ok?`<span style="color:var(--good)">Certo!</span> <span class="note">${bCur.pt}</span>`
+    :`<span style="color:var(--bad)">Not quite.</span> <span class="note">Correct: ${bCur.pt}</span>`;
+  speak(bCur.pt);renderB()};
+document.getElementById("b-next").onclick=nextB;
+nextB();
+
+/* ---------- Basics ---------- */
+const sEl=document.getElementById("sounds");
+SOUNDS.forEach(([k,d,ex])=>{const c=el("div","sound");const top=el("div","row");top.style.justifyContent="space-between";
+  top.append(el("span","k",k));const s=sayBtn(ex.replace(/ · /g,", "),"Hear examples");if(s)top.append(s);
+  c.append(top,el("p",null,d),el("div","ex",ex));sEl.append(c)});
+const nEl=document.getElementById("nums");
+NUMS.forEach(([n,pt,use])=>{const tr=el("tr");tr.innerHTML=`<td class="num">${n}</td><td><b>${pt}</b></td><td class="hint">${use}</td>`;
+  const td=el("td");const s=sayBtn(pt,"Hear "+pt);if(s)td.append(s);tr.append(td);nEl.append(tr)});
+</script>
+
+<script>
+if("serviceWorker" in navigator){window.addEventListener("load",()=>{navigator.serviceWorker.register("sw.js").catch(()=>{})})}
+</script>
+</body>
+</html>
