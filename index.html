@@ -202,6 +202,14 @@ h3{font-size:20px;font-weight:800;margin-top:10px}
       <li><b>Tem…?</b> = Is there…? / Do you have…? The fastest question in Brazil: <i>Tem água?</i> <i>Tem pedras aqui?</i></li>
       <li><b>Pode…?</b> = Can you…? Polite request pattern: <i>Pode repetir?</i> <i>Pode me ajudar?</i></li>
     </ul>
+    <h3>How numbers work</h3>
+    <ul class="tips">
+      <li><b>Join with "e"</b>: 21 = <i>vinte e um</i>, 47 = <i>quarenta e sete</i>, 135 = <i>cento e trinta e cinco</i>.</li>
+      <li><b>cem vs. cento</b>: exactly 100 is <i>cem</i>. Above 100 it becomes <i>cento e …</i>: 101 = <i>cento e um</i>.</li>
+      <li><b>Gender</b>: 1, 2 and the hundreds from 200 change with the noun: <i>uma cerveja</i>, <i>duas cervejas</i>, <i>duzentas pessoas</i>.</li>
+      <li><b>Prices</b>: R$ 25,50 is read <i>vinte e cinco reais e cinquenta (centavos)</i>. The comma is the decimal separator.</li>
+      <li><b>Times</b>: <i>às duas (horas)</i> = at two. <i>Duas e meia</i> = 2:30. Timetables use 24 h: <i>às dezesseis horas</i> = 4 pm.</li>
+    </ul>
     <h3>Numbers for wind and gear</h3>
     <div class="tbl-wrap">
       <table>
@@ -219,59 +227,111 @@ const SPK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-wid
 /* ---------- Data ---------- */
 const WORDS={
  "Basics":[
-  ["olá","hello"],["oi","hi"],["tchau","bye"],["obrigado / obrigada","thank you"],["por favor","please"],
+  ["olá","hello"],["oi","hi"],["tchau","bye"],["obrigado / obrigada","thank you"],["valeu","thanks (casual)"],["por favor","please"],
   ["de nada","you're welcome"],["desculpa","sorry"],["com licença","excuse me"],["sim","yes"],["não","no"],
-  ["tudo bem?","how are you? / all good?"],["bom dia","good morning"],["boa tarde","good afternoon"],
-  ["boa noite","good evening / night"],["não entendo","I don't understand"],["devagar","slowly"]],
+  ["tudo bem?","how are you? / all good?"],["tudo bom","all good"],["beleza","cool / OK"],["legal","nice / cool"],
+  ["com certeza","for sure"],["talvez","maybe"],["bom dia","good morning"],["boa tarde","good afternoon"],
+  ["boa noite","good evening / night"],["até logo","see you later"],["não entendo","I don't understand"],["não sei","I don't know"],
+  ["devagar","slowly"],["eu","I"],["você","you"],["a gente","we (casual)"],["aqui","here"],["ali","there"],
+  ["muito","very / a lot"],["pouco","a little"],["mais","more"],["menos","less"],["bom / boa","good"],["ruim","bad"],
+  ["grande","big"],["pequeno","small"],["quente","hot"],["frio","cold"],["cansado","tired"],["com fome","hungry"],["com sede","thirsty"]],
+ "Questions":[
+  ["o quê?","what?"],["onde?","where?"],["quando?","when?"],["quanto?","how much?"],["quantos?","how many?"],
+  ["como?","how?"],["por quê?","why?"],["quem?","who?"],["qual?","which?"],["que horas?","what time?"],
+  ["tem…?","is there… / do you have…?"],["pode…?","can you…?"],["posso…?","can I…?"]],
  "Travel":[
-  ["aeroporto","airport"],["passagem","ticket"],["mala","suitcase"],["pousada","guesthouse"],["quarto","room"],
-  ["chave","key"],["praia","beach"],["ônibus","bus"],["banheiro","bathroom"],["farmácia","pharmacy"],
-  ["dinheiro","money"],["cartão","card"],["rua","street"],["perto","near"],["longe","far"],
-  ["esquerda","left"],["direita","right"],["hoje","today"],["amanhã","tomorrow"],["reserva","reservation"]],
+  ["aeroporto","airport"],["voo","flight"],["passagem","ticket"],["passaporte","passport"],["mala","suitcase"],
+  ["mochila","backpack"],["bagagem","luggage"],["pousada","guesthouse"],["quarto","room"],["chave","key"],
+  ["senha do wi-fi","wi-fi password"],["ar-condicionado","air conditioning"],["toalha","towel"],["praia","beach"],
+  ["ônibus","bus"],["rodoviária","bus station"],["carro","car"],["mototáxi","motorbike taxi"],["bugue","dune buggy"],
+  ["banheiro","bathroom"],["farmácia","pharmacy"],["supermercado","supermarket"],["dinheiro","money / cash"],
+  ["cartão","card"],["caixa eletrônico","ATM"],["barato","cheap"],["caro","expensive"],["aberto","open"],
+  ["fechado","closed"],["rua","street"],["cidade","town / city"],["perto","near"],["longe","far"],
+  ["esquerda","left"],["direita","right"],["em frente","straight ahead"],["reserva","reservation"],
+  ["protetor solar","sunscreen"],["chinelo","flip-flops"]],
  "Food":[
-  ["água","water"],["água de coco","coconut water"],["cerveja","beer"],["suco","juice"],["café","coffee"],
-  ["a conta","the bill"],["peixe","fish"],["frango","chicken"],["carne","meat / beef"],["arroz","rice"],
-  ["feijão","beans"],["gelo","ice"],["sem açúcar","without sugar"],["garçom","waiter"],["cardápio","menu"]],
+  ["café da manhã","breakfast"],["almoço","lunch"],["jantar","dinner"],["água","water"],["água com gás","sparkling water"],
+  ["água de coco","coconut water"],["cerveja","beer"],["suco","juice"],["café","coffee"],["a conta","the bill"],
+  ["garçom","waiter"],["cardápio","menu"],["prato feito","set lunch plate"],["comida a quilo","pay-by-weight buffet"],
+  ["peixe","fish"],["camarão","shrimp"],["frango","chicken"],["carne","meat / beef"],["arroz","rice"],["feijão","beans"],
+  ["ovo","egg"],["pão","bread"],["queijo","cheese"],["fruta","fruit"],["salada","salad"],["batata frita","fries"],
+  ["sobremesa","dessert"],["gelo","ice"],["gelado","cold (drink)"],["sem açúcar","without sugar"],
+  ["apimentado","spicy"],["copo","glass"],["garrafa","bottle"],["delicioso","delicious"]],
+ "Time":[
+  ["hoje","today"],["amanhã","tomorrow"],["ontem","yesterday"],["agora","now"],["depois","later / after"],
+  ["antes","before"],["cedo","early"],["tarde","late / afternoon"],["manhã","morning"],["noite","night"],
+  ["meio-dia","noon"],["meia-noite","midnight"],["hora","hour"],["minuto","minute"],["semana","week"],
+  ["fim de semana","weekend"],["mês","month"],["segunda-feira","Monday"],["terça-feira","Tuesday"],
+  ["quarta-feira","Wednesday"],["quinta-feira","Thursday"],["sexta-feira","Friday"],["sábado","Saturday"],["domingo","Sunday"]],
  "Kitesurf":[
   ["vento","wind"],["prancha","board"],["trapézio","harness"],["barra","control bar"],["linhas","lines"],
-  ["onda","wave"],["maré","tide"],["maré alta","high tide"],["maré baixa","low tide"],["correnteza","current"],
-  ["lagoa","lagoon"],["rajada","gust"],["nós","knots"],["forte","strong"],["fraco","weak"],
-  ["vento terral","offshore wind"],["aluguel","rental"],["aula","lesson"],["quilha","fin"],["bomba","pump"],
-  ["pedras","rocks"],["água rasa","shallow water"],["perigo","danger"],["socorro!","help!"],
-  ["decolar","to launch (the kite)"],["pousar","to land (the kite)"],["velejar","to ride / sail"]],
+  ["quilha","fin"],["bomba","pump"],["colete","vest"],["capacete","helmet"],["roupa de borracha","wetsuit"],
+  ["lycra","rash vest"],["aluguel","rental"],["aula","lesson"],["escola de kite","kite school"],["instrutor","instructor"],
+  ["onda","wave"],["mar","sea"],["lagoa","lagoon"],["maré","tide"],["maré alta","high tide"],["maré baixa","low tide"],
+  ["correnteza","current"],["rajada","gust"],["nós","knots"],["forte","strong"],["fraco","weak"],["calmaria","no wind / calm"],
+  ["vento terral","offshore wind"],["previsão","forecast"],["chuva","rain"],["nuvem","cloud"],["tempestade","storm"],
+  ["areia","sand"],["pedras","rocks"],["recife","reef"],["água rasa","shallow water"],["água funda","deep water"],
+  ["arraia","stingray"],["água-viva","jellyfish"],["ouriço","sea urchin"],["barco","boat"],
+  ["perigo","danger"],["socorro!","help!"],["montar","to set up"],["inflar","to inflate"],["decolar","to launch (the kite)"],
+  ["pousar","to land (the kite)"],["velejar","to ride / sail"],["saltar","to jump"],["cair","to fall"],["nadar","to swim"],
+  ["furado","punctured"],["conserto","repair"]],
+ "Health":[
+  ["médico","doctor"],["hospital","hospital"],["farmácia","pharmacy"],["remédio","medicine"],["curativo","bandage / plaster"],
+  ["dor","pain"],["corte","cut"],["febre","fever"],["alergia","allergy"],["doente","sick"],["queimado de sol","sunburnt"],
+  ["cabeça","head"],["ombro","shoulder"],["costas","back"],["braço","arm"],["mão","hand"],["joelho","knee"],
+  ["tornozelo","ankle"],["pé","foot"],["olho","eye"],["ouvido","ear (inner)"],["barriga","belly"]],
  "Numbers":[
-  ["um / uma","1"],["dois / duas","2"],["três","3"],["quatro","4"],["cinco","5"],["seis","6"],["sete","7"],
-  ["oito","8"],["nove","9"],["dez","10"],["doze","12"],["quinze","15"],["vinte","20"],["trinta","30"],
-  ["cem","100"],["mil","1000"]]
+  ["zero","0"],["um / uma","1"],["dois / duas","2"],["três","3"],["quatro","4"],["cinco","5"],["seis","6"],["sete","7"],
+  ["oito","8"],["nove","9"],["dez","10"],["onze","11"],["doze","12"],["treze","13"],["catorze","14"],["quinze","15"],
+  ["dezesseis","16"],["dezessete","17"],["dezoito","18"],["dezenove","19"],["vinte","20"],["vinte e um","21"],
+  ["vinte e cinco","25"],["trinta","30"],["quarenta","40"],["cinquenta","50"],["sessenta","60"],["setenta","70"],
+  ["oitenta","80"],["noventa","90"],["cem","100"],["cento e vinte","120"],["duzentos","200"],["trezentos","300"],
+  ["quinhentos","500"],["mil","1000"],["dois mil","2000"],["meia","6 (in phone numbers)"],["metade","half"],
+  ["primeiro","first"],["segundo","second"],["terceiro","third"]]
 };
 
 const PHRASES=[
  {c:"Social",pt:"Tudo bem? Tudo ótimo!",en:"How's it going? All great!"},
  {c:"Social",pt:"Meu nome é …",en:"My name is …"},
  {c:"Social",pt:"De onde você é?",en:"Where are you from?"},
+ {c:"Social",pt:"Eu sou da Suíça.",en:"I'm from Switzerland."},
  {c:"Social",pt:"Eu falo um pouco de português.",en:"I speak a little Portuguese."},
  {c:"Social",pt:"Você fala inglês?",en:"Do you speak English?"},
  {c:"Social",pt:"Pode falar mais devagar, por favor?",en:"Can you speak more slowly, please?"},
  {c:"Social",pt:"Pode repetir?",en:"Can you repeat that?"},
  {c:"Social",pt:"Como se diz … em português?",en:"How do you say … in Portuguese?"},
+ {c:"Social",pt:"O que significa isso?",en:"What does that mean?"},
+ {c:"Social",pt:"Valeu, até amanhã!",en:"Thanks, see you tomorrow!"},
+ {c:"Social",pt:"Vamos tomar uma cerveja?",en:"Shall we grab a beer?"},
  {c:"Travel",pt:"Quanto custa?",en:"How much is it?"},
  {c:"Travel",pt:"Onde fica o banheiro?",en:"Where is the bathroom?"},
  {c:"Travel",pt:"Eu tenho uma reserva.",en:"I have a reservation."},
  {c:"Travel",pt:"Tem quarto disponível para hoje?",en:"Do you have a room available for tonight?"},
+ {c:"Travel",pt:"Qual é a senha do wi-fi?",en:"What's the wi-fi password?"},
+ {c:"Travel",pt:"A que horas é o café da manhã?",en:"What time is breakfast?"},
  {c:"Travel",pt:"A que horas sai o ônibus para Jericoacoara?",en:"What time does the bus to Jericoacoara leave?"},
  {c:"Travel",pt:"Pode chamar um táxi para mim?",en:"Can you call a taxi for me?"},
  {c:"Travel",pt:"Pode me levar para a praia?",en:"Can you take me to the beach?"},
+ {c:"Travel",pt:"Onde tem um caixa eletrônico?",en:"Where is there an ATM?"},
  {c:"Travel",pt:"Aceita cartão?",en:"Do you take card?"},
+ {c:"Travel",pt:"Aceita Pix?",en:"Do you take Pix?",n:"Pix is Brazil's instant payment system. Many small places prefer it."},
  {c:"Travel",pt:"É longe daqui?",en:"Is it far from here?"},
+ {c:"Travel",pt:"Que horas são?",en:"What time is it?"},
+ {c:"Travel",pt:"Até que horas fica aberto?",en:"Until what time is it open?"},
  {c:"Food",pt:"A conta, por favor.",en:"The bill, please."},
  {c:"Food",pt:"Uma água de coco, por favor.",en:"A coconut water, please."},
+ {c:"Food",pt:"Uma mesa para dois, por favor.",en:"A table for two, please."},
  {c:"Food",pt:"O que você recomenda?",en:"What do you recommend?"},
  {c:"Food",pt:"Sem gelo, por favor.",en:"No ice, please."},
+ {c:"Food",pt:"Uma cerveja bem gelada, por favor.",en:"A really cold beer, please."},
  {c:"Food",pt:"Eu sou vegetariano.",en:"I'm vegetarian.",n:"Women say vegetariana."},
+ {c:"Food",pt:"Isso é apimentado?",en:"Is this spicy?"},
  {c:"Food",pt:"Estava delicioso!",en:"It was delicious!"},
  {c:"Kitesurf",pt:"Como está o vento hoje?",en:"How's the wind today?",n:"Spoken: Como tá o vento hoje?"},
  {c:"Kitesurf",pt:"Quantos nós de vento tem agora?",en:"How many knots of wind are there now?"},
  {c:"Kitesurf",pt:"O vento vai ficar bom à tarde?",en:"Will the wind pick up in the afternoon?"},
+ {c:"Kitesurf",pt:"Qual é a previsão para amanhã?",en:"What's the forecast for tomorrow?"},
+ {c:"Kitesurf",pt:"Qual tamanho de kite você recomenda?",en:"What kite size do you recommend?"},
  {c:"Kitesurf",pt:"Quero alugar um kite de doze metros.",en:"I want to rent a 12 m kite."},
  {c:"Kitesurf",pt:"Quanto custa a aula por hora?",en:"How much is the lesson per hour?"},
  {c:"Kitesurf",pt:"Eu sou iniciante.",en:"I'm a beginner.",n:"Also: intermediário (intermediate), avançado (advanced)."},
@@ -279,13 +339,26 @@ const PHRASES=[
  {c:"Kitesurf",pt:"Você pode pousar meu kite?",en:"Can you land my kite?"},
  {c:"Kitesurf",pt:"A maré está subindo ou descendo?",en:"Is the tide coming in or going out?"},
  {c:"Kitesurf",pt:"Tem pedras aqui?",en:"Are there rocks here?"},
+ {c:"Kitesurf",pt:"Tem arraias na lagoa?",en:"Are there stingrays in the lagoon?",n:"Shuffle your feet when walking in shallow water."},
  {c:"Kitesurf",pt:"A água é rasa aqui?",en:"Is the water shallow here?"},
  {c:"Kitesurf",pt:"Onde é seguro velejar?",en:"Where is it safe to ride?"},
  {c:"Kitesurf",pt:"O vento está forte demais para mim.",en:"The wind is too strong for me."},
  {c:"Kitesurf",pt:"Minhas linhas estão enroladas.",en:"My lines are tangled."},
+ {c:"Kitesurf",pt:"Meu kite está furado.",en:"My kite has a puncture."},
+ {c:"Kitesurf",pt:"Onde posso consertar meu kite?",en:"Where can I get my kite repaired?"},
  {c:"Kitesurf",pt:"Onde posso guardar meu equipamento?",en:"Where can I store my gear?"},
  {c:"Kitesurf",pt:"Quero fazer um downwind amanhã.",en:"I want to do a downwinder tomorrow."},
- {c:"Kitesurf",pt:"Preciso de ajuda!",en:"I need help!"}
+ {c:"Kitesurf",pt:"Você pode me buscar no final do downwind?",en:"Can you pick me up at the end of the downwinder?"},
+ {c:"Kitesurf",pt:"Preciso de ajuda!",en:"I need help!"},
+ {c:"Health",pt:"Preciso de um médico.",en:"I need a doctor."},
+ {c:"Health",pt:"Onde fica o hospital mais perto?",en:"Where is the nearest hospital?"},
+ {c:"Health",pt:"Estou com dor no joelho.",en:"My knee hurts.",n:"Swap the body part: dor nas costas, dor no ombro."},
+ {c:"Health",pt:"Me cortei no recife.",en:"I cut myself on the reef."},
+ {c:"Health",pt:"Pisei numa arraia.",en:"I stepped on a stingray.",n:"Hot water on the wound eases the pain. Get it checked."},
+ {c:"Health",pt:"Fui queimado por uma água-viva.",en:"I got stung by a jellyfish."},
+ {c:"Health",pt:"Tenho alergia a …",en:"I'm allergic to …"},
+ {c:"Health",pt:"Você tem algo para dor de cabeça?",en:"Do you have something for a headache?"},
+ {c:"Health",pt:"Chame uma ambulância!",en:"Call an ambulance!",n:"Emergency numbers: 192 ambulance, 193 fire and sea rescue, 190 police."}
 ];
 
 const SOUNDS=[
@@ -387,7 +460,7 @@ function showResult(){
 renderCats();newRound();
 
 /* ---------- Phrases ---------- */
-const PCATS=["All","Social","Travel","Food","Kitesurf"];let pCat="All";
+const PCATS=["All","Social","Travel","Food","Kitesurf","Health"];let pCat="All";
 const pCatsEl=document.getElementById("p-cats"), plist=document.getElementById("plist");
 function renderPCats(){pCatsEl.innerHTML="";PCATS.forEach(c=>{const b=el("button","chip",c);b.setAttribute("aria-pressed",c===pCat);
   b.onclick=()=>{pCat=c;renderPCats();renderPhrases()};pCatsEl.append(b)})}
