@@ -37,6 +37,7 @@
   --good:#52C584; --good-soft:#153826; --bad:#F06D63; --bad-soft:#40201E; color-scheme:dark }
 
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5}
 .wrap{max-width:720px;margin:0 auto;padding-inline:16px;padding-block:20px 48px}
 h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0}
@@ -53,8 +54,8 @@ header p{margin:10px 0 0;color:var(--muted);max-width:52ch}
 
 /* Tabs */
 nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:8px;margin-bottom:14px}
-.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px}
-.tabs button{border:0;background:none;border-radius:999px;padding:9px 4px;font-weight:700;font-size:14px;color:var(--muted)}
+.tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px}
+.tabs button{border:0;background:none;border-radius:999px;padding:9px 2px;font-weight:700;font-size:13px;min-width:0;color:var(--muted)}
 .tabs button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
 
 section[role="tabpanel"]{display:flex;flex-direction:column;gap:14px}
@@ -129,6 +130,16 @@ td.num{font-variant-numeric:tabular-nums;font-weight:700;width:60px}
 .tips b{color:var(--accent)}
 h3{font-size:20px;font-weight:800;margin-top:10px}
 .hint{font-size:13px;color:var(--muted)}
+.numbig{font-family:var(--f-display);font-size:clamp(44px,14vw,72px);font-weight:800;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.nopts .opt{font-size:16px;font-weight:700}
+.listenbtn{display:inline-flex;align-items:center;gap:10px;margin-block:14px;font-size:18px}
+.listenbtn svg{width:22px;height:22px;color:var(--accent)}
+.listenform{flex-wrap:nowrap}
+.listenform input{flex:1;min-width:0;font:inherit;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;padding:11px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink)}
+.listenform input:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.listenform input.good{border-color:var(--good);background:var(--good-soft)}
+.listenform input.bad{border-color:var(--bad);background:var(--bad-soft)}
+.verbs td:first-child{font-weight:700;color:var(--accent)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
@@ -147,6 +158,7 @@ h3{font-size:20px;font-weight:800;margin-top:10px}
   <nav>
     <div class="tabs" role="tablist">
       <button role="tab" id="t-quiz" aria-selected="true" aria-controls="p-quiz">Quiz</button>
+      <button role="tab" id="t-num" aria-selected="false" aria-controls="p-num">Números</button>
       <button role="tab" id="t-phr" aria-selected="false" aria-controls="p-phr">Frases</button>
       <button role="tab" id="t-build" aria-selected="false" aria-controls="p-build">Montar</button>
       <button role="tab" id="t-basic" aria-selected="false" aria-controls="p-basic">Básico</button>
@@ -162,6 +174,17 @@ h3{font-size:20px;font-weight:800;margin-top:10px}
       <button class="chip" id="dir-en" aria-pressed="false">EN → PT</button>
     </div>
     <div class="card" id="q-card"></div>
+  </section>
+
+  <!-- NUMBERS -->
+  <section role="tabpanel" id="p-num" aria-labelledby="t-num" hidden>
+    <div class="row" id="n-ranges"></div>
+    <div class="row">
+      <span class="lbl">Mode</span>
+      <button class="chip" id="nm-read" aria-pressed="true">Read</button>
+      <button class="chip" id="nm-listen" aria-pressed="false">Listen</button>
+    </div>
+    <div class="card" id="n-card"></div>
   </section>
 
   <!-- PHRASES -->
@@ -202,6 +225,28 @@ h3{font-size:20px;font-weight:800;margin-top:10px}
       <li><b>Tem…?</b> = Is there…? / Do you have…? The fastest question in Brazil: <i>Tem água?</i> <i>Tem pedras aqui?</i></li>
       <li><b>Pode…?</b> = Can you…? Polite request pattern: <i>Pode repetir?</i> <i>Pode me ajudar?</i></li>
     </ul>
+    <h3>Key verbs, present tense</h3>
+    <div class="tbl-wrap">
+      <table class="verbs">
+        <thead><tr><th>Verb</th><th>eu</th><th>você · ele · a gente</th><th>vocês · eles</th></tr></thead>
+        <tbody>
+          <tr><td>ser</td><td>sou</td><td>é</td><td>são</td></tr>
+          <tr><td>estar</td><td>estou (tô)</td><td>está (tá)</td><td>estão</td></tr>
+          <tr><td>ter</td><td>tenho</td><td>tem</td><td>têm</td></tr>
+          <tr><td>ir</td><td>vou</td><td>vai</td><td>vão</td></tr>
+          <tr><td>querer</td><td>quero</td><td>quer</td><td>querem</td></tr>
+          <tr><td>poder</td><td>posso</td><td>pode</td><td>podem</td></tr>
+          <tr><td>precisar (de)</td><td>preciso</td><td>precisa</td><td>precisam</td></tr>
+          <tr><td>gostar (de)</td><td>gosto</td><td>gosta</td><td>gostam</td></tr>
+          <tr><td>fazer</td><td>faço</td><td>faz</td><td>fazem</td></tr>
+          <tr><td>saber</td><td>sei</td><td>sabe</td><td>sabem</td></tr>
+          <tr><td>falar <span class="hint">(-ar model)</span></td><td>falo</td><td>fala</td><td>falam</td></tr>
+          <tr><td>comer <span class="hint">(-er model)</span></td><td>como</td><td>come</td><td>comem</td></tr>
+          <tr><td>dormir</td><td>durmo</td><td>dorme</td><td>dormem</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="hint">Future the easy way: <i>ir</i> + infinitive. <i>Vou alugar um carro</i> = I'm going to rent a car.</p>
     <h3>How numbers work</h3>
     <ul class="tips">
       <li><b>Join with "e"</b>: 21 = <i>vinte e um</i>, 47 = <i>quarenta e sete</i>, 135 = <i>cento e trinta e cinco</i>.</li>
@@ -232,37 +277,79 @@ const WORDS={
   ["tudo bem?","how are you? / all good?"],["tudo bom","all good"],["beleza","cool / OK"],["legal","nice / cool"],
   ["com certeza","for sure"],["talvez","maybe"],["bom dia","good morning"],["boa tarde","good afternoon"],
   ["boa noite","good evening / night"],["até logo","see you later"],["não entendo","I don't understand"],["não sei","I don't know"],
-  ["devagar","slowly"],["eu","I"],["você","you"],["a gente","we (casual)"],["aqui","here"],["ali","there"],
+  ["devagar","slowly"],["eu","I"],["você","you"],["ele / ela","he / she"],["a gente","we (casual)"],["vocês","you (plural)"],["eles / elas","they"],
+  ["aqui","here"],["ali","there"],["e","and"],["ou","or"],["mas","but"],["com","with"],["sem","without"],["para","for / to"],
   ["muito","very / a lot"],["pouco","a little"],["mais","more"],["menos","less"],["bom / boa","good"],["ruim","bad"],
-  ["grande","big"],["pequeno","small"],["quente","hot"],["frio","cold"],["cansado","tired"],["com fome","hungry"],["com sede","thirsty"]],
+  ["grande","big"],["pequeno","small"],["novo","new"],["velho","old"],["quente","hot"],["frio","cold"],
+  ["limpo","clean"],["sujo","dirty"],["cansado","tired"],["com fome","hungry"],["com sede","thirsty"]],
  "Questions":[
   ["o quê?","what?"],["onde?","where?"],["quando?","when?"],["quanto?","how much?"],["quantos?","how many?"],
   ["como?","how?"],["por quê?","why?"],["quem?","who?"],["qual?","which?"],["que horas?","what time?"],
   ["tem…?","is there… / do you have…?"],["pode…?","can you…?"],["posso…?","can I…?"]],
- "Travel":[
-  ["aeroporto","airport"],["voo","flight"],["passagem","ticket"],["passaporte","passport"],["mala","suitcase"],
-  ["mochila","backpack"],["bagagem","luggage"],["pousada","guesthouse"],["quarto","room"],["chave","key"],
-  ["senha do wi-fi","wi-fi password"],["ar-condicionado","air conditioning"],["toalha","towel"],["praia","beach"],
-  ["ônibus","bus"],["rodoviária","bus station"],["carro","car"],["mototáxi","motorbike taxi"],["bugue","dune buggy"],
-  ["banheiro","bathroom"],["farmácia","pharmacy"],["supermercado","supermarket"],["dinheiro","money / cash"],
-  ["cartão","card"],["caixa eletrônico","ATM"],["barato","cheap"],["caro","expensive"],["aberto","open"],
-  ["fechado","closed"],["rua","street"],["cidade","town / city"],["perto","near"],["longe","far"],
-  ["esquerda","left"],["direita","right"],["em frente","straight ahead"],["reserva","reservation"],
-  ["protetor solar","sunscreen"],["chinelo","flip-flops"]],
- "Food":[
-  ["café da manhã","breakfast"],["almoço","lunch"],["jantar","dinner"],["água","water"],["água com gás","sparkling water"],
-  ["água de coco","coconut water"],["cerveja","beer"],["suco","juice"],["café","coffee"],["a conta","the bill"],
-  ["garçom","waiter"],["cardápio","menu"],["prato feito","set lunch plate"],["comida a quilo","pay-by-weight buffet"],
-  ["peixe","fish"],["camarão","shrimp"],["frango","chicken"],["carne","meat / beef"],["arroz","rice"],["feijão","beans"],
-  ["ovo","egg"],["pão","bread"],["queijo","cheese"],["fruta","fruit"],["salada","salad"],["batata frita","fries"],
-  ["sobremesa","dessert"],["gelo","ice"],["gelado","cold (drink)"],["sem açúcar","without sugar"],
-  ["apimentado","spicy"],["copo","glass"],["garrafa","bottle"],["delicioso","delicious"]],
+ "Numbers":[
+  ["zero","0"],["um / uma","1"],["dois / duas","2"],["três","3"],["quatro","4"],["cinco","5"],["seis","6"],["sete","7"],
+  ["oito","8"],["nove","9"],["dez","10"],["onze","11"],["doze","12"],["treze","13"],["catorze","14"],["quinze","15"],
+  ["dezesseis","16"],["dezessete","17"],["dezoito","18"],["dezenove","19"],["vinte","20"],["vinte e um","21"],
+  ["vinte e cinco","25"],["trinta","30"],["quarenta","40"],["cinquenta","50"],["sessenta","60"],["setenta","70"],
+  ["oitenta","80"],["noventa","90"],["cem","100"],["cento e vinte","120"],["duzentos","200"],["trezentos","300"],
+  ["quatrocentos","400"],["quinhentos","500"],["seiscentos","600"],["mil","1000"],["dois mil","2000"],
+  ["meia","6 (in phone numbers)"],["metade","half"],["primeiro","first"],["segundo","second"],["terceiro","third"]],
  "Time":[
   ["hoje","today"],["amanhã","tomorrow"],["ontem","yesterday"],["agora","now"],["depois","later / after"],
   ["antes","before"],["cedo","early"],["tarde","late / afternoon"],["manhã","morning"],["noite","night"],
-  ["meio-dia","noon"],["meia-noite","midnight"],["hora","hour"],["minuto","minute"],["semana","week"],
-  ["fim de semana","weekend"],["mês","month"],["segunda-feira","Monday"],["terça-feira","Tuesday"],
+  ["meio-dia","noon"],["meia-noite","midnight"],["hora","hour"],["minuto","minute"],["dia","day"],["semana","week"],
+  ["fim de semana","weekend"],["mês","month"],["ano","year"],["segunda-feira","Monday"],["terça-feira","Tuesday"],
   ["quarta-feira","Wednesday"],["quinta-feira","Thursday"],["sexta-feira","Friday"],["sábado","Saturday"],["domingo","Sunday"]],
+ "Verbs":[
+  ["ser","to be (identity)"],["estar","to be (state)"],["ter","to have"],["ir","to go"],["querer","to want"],
+  ["poder","can / may"],["precisar","to need"],["gostar","to like"],["falar","to speak"],["entender","to understand"],
+  ["saber","to know (facts)"],["conhecer","to know (people, places)"],["comer","to eat"],["beber","to drink"],
+  ["dormir","to sleep"],["comprar","to buy"],["pagar","to pay"],["alugar","to rent"],["chegar","to arrive"],
+  ["sair","to leave / go out"],["voltar","to come back"],["ficar","to stay"],["esperar","to wait"],["ajudar","to help"],
+  ["procurar","to look for"],["abrir","to open"],["fechar","to close"],["ver","to see"],["fazer","to do / make"],["trabalhar","to work"]],
+ "People":[
+  ["homem","man"],["mulher","woman"],["criança","child"],["amigo / amiga","friend"],["namorado / namorada","boyfriend / girlfriend"],
+  ["marido","husband"],["esposa","wife"],["família","family"],["pai","father"],["mãe","mother"],["irmão","brother"],
+  ["irmã","sister"],["filho","son"],["filha","daughter"],["moço / moça","young man / young woman (to call staff)"]],
+ "Colors":[
+  ["branco","white"],["preto","black"],["vermelho","red"],["azul","blue"],["verde","green"],["amarelo","yellow"],
+  ["laranja","orange"],["rosa","pink"],["roxo","purple"],["cinza","grey"],["marrom","brown"]],
+ "Hotel":[
+  ["recepção","reception"],["hóspede","guest"],["reserva","reservation"],["diária","nightly rate"],["noite","night"],
+  ["quarto de casal","double room"],["quarto de solteiro","single room"],["quarto duplo","twin room"],["cama","bed"],
+  ["travesseiro","pillow"],["lençol","sheet"],["cobertor","blanket"],["toalha","towel"],["chuveiro","shower"],
+  ["água quente","hot water"],["ar-condicionado","air conditioning"],["ventilador","fan"],["janela","window"],
+  ["porta","door"],["chave","key"],["andar","floor (level)"],["elevador","lift / elevator"],["escada","stairs"],
+  ["café da manhã incluído","breakfast included"],["cofre","safe"],["limpeza","cleaning"],["lavanderia","laundry"],
+  ["tomada","power socket"],["carregador","charger"],["senha do wi-fi","wi-fi password"],["piscina","pool"],
+  ["rede","hammock"],["mosquito","mosquito"],["repelente","insect repellent"],["barulho","noise"],["silencioso","quiet"]],
+ "Travel":[
+  ["aeroporto","airport"],["voo","flight"],["passagem","ticket"],["passaporte","passport"],["mala","suitcase"],
+  ["mochila","backpack"],["bagagem","luggage"],["praia","beach"],["ônibus","bus"],["rodoviária","bus station"],
+  ["carro","car"],["táxi","taxi"],["mototáxi","motorbike taxi"],["bugue","dune buggy"],["banheiro","bathroom"],
+  ["farmácia","pharmacy"],["caixa eletrônico","ATM"],["dinheiro","money / cash"],["cartão","card"],
+  ["aberto","open"],["fechado","closed"],["rua","street"],["cidade","town / city"],["centro","town centre"],
+  ["perto","near"],["longe","far"],["esquerda","left"],["direita","right"],["em frente","straight ahead"],
+  ["esquina","corner"],["a pé","on foot"],["mapa","map"],["protetor solar","sunscreen"],["chinelo","flip-flops"]],
+ "Food":[
+  ["café da manhã","breakfast"],["almoço","lunch"],["jantar","dinner"],["água","water"],["água com gás","sparkling water"],
+  ["água de coco","coconut water"],["cerveja","beer"],["suco","juice"],["café","coffee"],["leite","milk"],["a conta","the bill"],
+  ["garçom","waiter"],["cardápio","menu"],["prato feito","set lunch plate"],["comida a quilo","pay-by-weight buffet"],
+  ["peixe","fish"],["camarão","shrimp"],["frango","chicken"],["carne","meat / beef"],["arroz","rice"],["feijão","beans"],
+  ["ovo","egg"],["pão","bread"],["queijo","cheese"],["manteiga","butter"],["fruta","fruit"],["salada","salad"],["batata frita","fries"],
+  ["sobremesa","dessert"],["sal","salt"],["gelo","ice"],["gelado","cold (drink)"],["sem açúcar","without sugar"],
+  ["apimentado","spicy"],["copo","glass"],["garrafa","bottle"],["garfo","fork"],["faca","knife"],["colher","spoon"],["delicioso","delicious"]],
+ "Shopping":[
+  ["loja","shop"],["mercado","market / grocery"],["supermercado","supermarket"],["padaria","bakery"],["preço","price"],
+  ["barato","cheap"],["caro","expensive"],["desconto","discount"],["troco","change (money)"],["sacola","shopping bag"],
+  ["tamanho","size"],["caixa","checkout"],["nota fiscal","receipt"],["à vista","paid in full / cash"],["parcelado","in instalments"],
+  ["camiseta","t-shirt"],["bermuda","shorts"],["boné","cap"],["chapéu","hat"],["óculos de sol","sunglasses"],
+  ["biquíni","bikini"],["sunga","swim trunks"],["chip","SIM card"],["recarga","phone top-up"]],
+ "Health":[
+  ["médico","doctor"],["hospital","hospital"],["remédio","medicine"],["curativo","bandage / plaster"],
+  ["dor","pain"],["corte","cut"],["febre","fever"],["alergia","allergy"],["doente","sick"],["queimado de sol","sunburnt"],
+  ["cabeça","head"],["ombro","shoulder"],["costas","back"],["braço","arm"],["mão","hand"],["joelho","knee"],
+  ["tornozelo","ankle"],["pé","foot"],["olho","eye"],["ouvido","ear (inner)"],["barriga","belly"]],
  "Kitesurf":[
   ["vento","wind"],["prancha","board"],["trapézio","harness"],["barra","control bar"],["linhas","lines"],
   ["quilha","fin"],["bomba","pump"],["colete","vest"],["capacete","helmet"],["roupa de borracha","wetsuit"],
@@ -274,25 +361,13 @@ const WORDS={
   ["arraia","stingray"],["água-viva","jellyfish"],["ouriço","sea urchin"],["barco","boat"],
   ["perigo","danger"],["socorro!","help!"],["montar","to set up"],["inflar","to inflate"],["decolar","to launch (the kite)"],
   ["pousar","to land (the kite)"],["velejar","to ride / sail"],["saltar","to jump"],["cair","to fall"],["nadar","to swim"],
-  ["furado","punctured"],["conserto","repair"]],
- "Health":[
-  ["médico","doctor"],["hospital","hospital"],["farmácia","pharmacy"],["remédio","medicine"],["curativo","bandage / plaster"],
-  ["dor","pain"],["corte","cut"],["febre","fever"],["alergia","allergy"],["doente","sick"],["queimado de sol","sunburnt"],
-  ["cabeça","head"],["ombro","shoulder"],["costas","back"],["braço","arm"],["mão","hand"],["joelho","knee"],
-  ["tornozelo","ankle"],["pé","foot"],["olho","eye"],["ouvido","ear (inner)"],["barriga","belly"]],
- "Numbers":[
-  ["zero","0"],["um / uma","1"],["dois / duas","2"],["três","3"],["quatro","4"],["cinco","5"],["seis","6"],["sete","7"],
-  ["oito","8"],["nove","9"],["dez","10"],["onze","11"],["doze","12"],["treze","13"],["catorze","14"],["quinze","15"],
-  ["dezesseis","16"],["dezessete","17"],["dezoito","18"],["dezenove","19"],["vinte","20"],["vinte e um","21"],
-  ["vinte e cinco","25"],["trinta","30"],["quarenta","40"],["cinquenta","50"],["sessenta","60"],["setenta","70"],
-  ["oitenta","80"],["noventa","90"],["cem","100"],["cento e vinte","120"],["duzentos","200"],["trezentos","300"],
-  ["quinhentos","500"],["mil","1000"],["dois mil","2000"],["meia","6 (in phone numbers)"],["metade","half"],
-  ["primeiro","first"],["segundo","second"],["terceiro","third"]]
+  ["furado","punctured"],["conserto","repair"]]
 };
 
 const PHRASES=[
  {c:"Social",pt:"Tudo bem? Tudo ótimo!",en:"How's it going? All great!"},
  {c:"Social",pt:"Meu nome é …",en:"My name is …"},
+ {c:"Social",pt:"Prazer em conhecer você.",en:"Nice to meet you.",n:"Short form: Prazer!"},
  {c:"Social",pt:"De onde você é?",en:"Where are you from?"},
  {c:"Social",pt:"Eu sou da Suíça.",en:"I'm from Switzerland."},
  {c:"Social",pt:"Eu falo um pouco de português.",en:"I speak a little Portuguese."},
@@ -301,32 +376,64 @@ const PHRASES=[
  {c:"Social",pt:"Pode repetir?",en:"Can you repeat that?"},
  {c:"Social",pt:"Como se diz … em português?",en:"How do you say … in Portuguese?"},
  {c:"Social",pt:"O que significa isso?",en:"What does that mean?"},
+ {c:"Social",pt:"Quantos anos você tem?",en:"How old are you?",n:"Answer: Eu tenho trinta anos."},
  {c:"Social",pt:"Valeu, até amanhã!",en:"Thanks, see you tomorrow!"},
  {c:"Social",pt:"Vamos tomar uma cerveja?",en:"Shall we grab a beer?"},
- {c:"Travel",pt:"Quanto custa?",en:"How much is it?"},
+ {c:"Hotel",pt:"Eu tenho uma reserva no nome de …",en:"I have a reservation under the name …"},
+ {c:"Hotel",pt:"Tem quarto disponível para hoje?",en:"Do you have a room available for tonight?"},
+ {c:"Hotel",pt:"Tem quarto de casal?",en:"Do you have a double room?"},
+ {c:"Hotel",pt:"Quanto é a diária?",en:"How much is it per night?"},
+ {c:"Hotel",pt:"Vou ficar três noites.",en:"I'll stay three nights."},
+ {c:"Hotel",pt:"O café da manhã está incluído?",en:"Is breakfast included?"},
+ {c:"Hotel",pt:"A que horas é o café da manhã?",en:"What time is breakfast?"},
+ {c:"Hotel",pt:"A que horas é o check-out?",en:"What time is check-out?"},
+ {c:"Hotel",pt:"Posso ver o quarto?",en:"Can I see the room?"},
+ {c:"Hotel",pt:"Tem um quarto mais silencioso?",en:"Do you have a quieter room?"},
+ {c:"Hotel",pt:"Qual é a senha do wi-fi?",en:"What's the wi-fi password?"},
+ {c:"Hotel",pt:"O ar-condicionado não funciona.",en:"The air conditioning doesn't work."},
+ {c:"Hotel",pt:"O chuveiro não tem água quente.",en:"The shower has no hot water."},
+ {c:"Hotel",pt:"Pode trocar as toalhas, por favor?",en:"Can you change the towels, please?"},
+ {c:"Hotel",pt:"Onde posso lavar roupa?",en:"Where can I do laundry?"},
+ {c:"Hotel",pt:"Posso deixar minha mala aqui?",en:"Can I leave my suitcase here?"},
+ {c:"Hotel",pt:"Perdi a chave do quarto.",en:"I lost the room key."},
  {c:"Travel",pt:"Onde fica o banheiro?",en:"Where is the bathroom?"},
- {c:"Travel",pt:"Eu tenho uma reserva.",en:"I have a reservation."},
- {c:"Travel",pt:"Tem quarto disponível para hoje?",en:"Do you have a room available for tonight?"},
- {c:"Travel",pt:"Qual é a senha do wi-fi?",en:"What's the wi-fi password?"},
- {c:"Travel",pt:"A que horas é o café da manhã?",en:"What time is breakfast?"},
- {c:"Travel",pt:"A que horas sai o ônibus para Jericoacoara?",en:"What time does the bus to Jericoacoara leave?"},
- {c:"Travel",pt:"Pode chamar um táxi para mim?",en:"Can you call a taxi for me?"},
- {c:"Travel",pt:"Pode me levar para a praia?",en:"Can you take me to the beach?"},
- {c:"Travel",pt:"Onde tem um caixa eletrônico?",en:"Where is there an ATM?"},
- {c:"Travel",pt:"Aceita cartão?",en:"Do you take card?"},
- {c:"Travel",pt:"Aceita Pix?",en:"Do you take Pix?",n:"Pix is Brazil's instant payment system. Many small places prefer it."},
+ {c:"Travel",pt:"Como eu chego na praia?",en:"How do I get to the beach?"},
+ {c:"Travel",pt:"Dá para ir a pé?",en:"Can I walk there?"},
  {c:"Travel",pt:"É longe daqui?",en:"Is it far from here?"},
+ {c:"Travel",pt:"Vire à esquerda.",en:"Turn left.",n:"You'll hear this. Vire à direita = turn right."},
+ {c:"Travel",pt:"Siga em frente.",en:"Go straight ahead."},
+ {c:"Travel",pt:"É a segunda rua à direita.",en:"It's the second street on the right."},
+ {c:"Travel",pt:"A que horas sai o ônibus para Jericoacoara?",en:"What time does the bus to Jericoacoara leave?"},
+ {c:"Travel",pt:"Uma passagem para Fortaleza, por favor.",en:"One ticket to Fortaleza, please."},
+ {c:"Travel",pt:"Pode chamar um táxi para mim?",en:"Can you call a taxi for me?"},
+ {c:"Travel",pt:"Pode me levar para este endereço?",en:"Can you take me to this address?"},
+ {c:"Travel",pt:"Onde tem um caixa eletrônico?",en:"Where is there an ATM?"},
  {c:"Travel",pt:"Que horas são?",en:"What time is it?"},
  {c:"Travel",pt:"Até que horas fica aberto?",en:"Until what time is it open?"},
- {c:"Food",pt:"A conta, por favor.",en:"The bill, please."},
- {c:"Food",pt:"Uma água de coco, por favor.",en:"A coconut water, please."},
  {c:"Food",pt:"Uma mesa para dois, por favor.",en:"A table for two, please."},
+ {c:"Food",pt:"O cardápio, por favor.",en:"The menu, please."},
  {c:"Food",pt:"O que você recomenda?",en:"What do you recommend?"},
- {c:"Food",pt:"Sem gelo, por favor.",en:"No ice, please."},
+ {c:"Food",pt:"Eu quero o peixe, por favor.",en:"I'd like the fish, please."},
+ {c:"Food",pt:"Uma água de coco, por favor.",en:"A coconut water, please."},
  {c:"Food",pt:"Uma cerveja bem gelada, por favor.",en:"A really cold beer, please."},
+ {c:"Food",pt:"Sem gelo, por favor.",en:"No ice, please."},
  {c:"Food",pt:"Eu sou vegetariano.",en:"I'm vegetarian.",n:"Women say vegetariana."},
  {c:"Food",pt:"Isso é apimentado?",en:"Is this spicy?"},
  {c:"Food",pt:"Estava delicioso!",en:"It was delicious!"},
+ {c:"Food",pt:"A conta, por favor.",en:"The bill, please."},
+ {c:"Food",pt:"O serviço está incluído?",en:"Is service included?",n:"Restaurants usually add 10 % service to the bill."},
+ {c:"Shopping",pt:"Quanto custa?",en:"How much is it?"},
+ {c:"Shopping",pt:"Estou só olhando.",en:"I'm just looking."},
+ {c:"Shopping",pt:"Tem em outro tamanho?",en:"Do you have it in another size?"},
+ {c:"Shopping",pt:"Tem em azul?",en:"Do you have it in blue?"},
+ {c:"Shopping",pt:"Pode fazer um preço melhor?",en:"Can you give me a better price?"},
+ {c:"Shopping",pt:"Tem desconto à vista?",en:"Is there a discount for paying cash?",n:"À vista = paying in full now, by cash or Pix."},
+ {c:"Shopping",pt:"Vou levar.",en:"I'll take it."},
+ {c:"Shopping",pt:"Aceita cartão?",en:"Do you take card?"},
+ {c:"Shopping",pt:"Aceita Pix?",en:"Do you take Pix?",n:"Pix is Brazil's instant payment system. Many small places prefer it."},
+ {c:"Shopping",pt:"Não tenho troco.",en:"I don't have change."},
+ {c:"Shopping",pt:"CPF na nota?",en:"Your tax number on the receipt?",n:"Cashiers ask this. As a tourist, answer: Não, obrigado."},
+ {c:"Shopping",pt:"Quero comprar um chip de celular.",en:"I want to buy a SIM card."},
  {c:"Kitesurf",pt:"Como está o vento hoje?",en:"How's the wind today?",n:"Spoken: Como tá o vento hoje?"},
  {c:"Kitesurf",pt:"Quantos nós de vento tem agora?",en:"How many knots of wind are there now?"},
  {c:"Kitesurf",pt:"O vento vai ficar bom à tarde?",en:"Will the wind pick up in the afternoon?"},
@@ -460,7 +567,7 @@ function showResult(){
 renderCats();newRound();
 
 /* ---------- Phrases ---------- */
-const PCATS=["All","Social","Travel","Food","Kitesurf","Health"];let pCat="All";
+const PCATS=["All","Social","Hotel","Travel","Food","Shopping","Health","Kitesurf"];let pCat="All";
 const pCatsEl=document.getElementById("p-cats"), plist=document.getElementById("plist");
 function renderPCats(){pCatsEl.innerHTML="";PCATS.forEach(c=>{const b=el("button","chip",c);b.setAttribute("aria-pressed",c===pCat);
   b.onclick=()=>{pCat=c;renderPCats();renderPhrases()};pCatsEl.append(b)})}
@@ -497,6 +604,111 @@ document.getElementById("b-check").onclick=()=>{
   speak(bCur.pt);renderB()};
 document.getElementById("b-next").onclick=nextB;
 nextB();
+
+/* ---------- Number trainer ---------- */
+function ptNum(n,fem){
+  const U=["zero","um","dois","três","quatro","cinco","seis","sete","oito","nove","dez","onze","doze","treze","catorze","quinze","dezesseis","dezessete","dezoito","dezenove"];
+  const UF={1:"uma",2:"duas"};
+  const T=["","","vinte","trinta","quarenta","cinquenta","sessenta","setenta","oitenta","noventa"];
+  const H=["","cento","duzentos","trezentos","quatrocentos","quinhentos","seiscentos","setecentos","oitocentos","novecentos"];
+  const u=x=>fem&&UF[x]?UF[x]:U[x];
+  const b100=x=>x<20?u(x):T[Math.floor(x/10)]+(x%10?" e "+u(x%10):"");
+  const b1000=x=>{if(x<100)return b100(x);if(x===100)return "cem";const h=Math.floor(x/100),r=x%100;
+    let w=H[h];if(fem&&h>=2)w=w.replace(/os$/,"as");return w+(r?" e "+b100(r):"")};
+  if(n<1000)return b1000(n);
+  const th=Math.floor(n/1000),r=n%1000,tw=th===1?"mil":b1000(th)+" mil";
+  if(!r)return tw;
+  return tw+((r<100||r%100===0)?" e ":" ")+b1000(r);
+}
+const ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const NRANGES={
+  "0–20":{gen:()=>({n:ri(0,20)})},
+  "0–100":{gen:()=>({n:ri(0,100)})},
+  "100–1000":{gen:()=>({n:Math.random()<.5?ri(1,10)*100:ri(100,999)})},
+  "1000+":{gen:()=>({n:Math.random()<.4?ri(1,9)*1000+ri(0,9)*100:ri(1000,9999)})},
+  "Prices":{gen:()=>({r:[ri(1,20),ri(5,99),ri(10,300),ri(1,9)*10][ri(0,3)],c:[0,0,50,90,25,99,75][ri(0,6)]})},
+  "Times":{gen:()=>({h:ri(0,23),m:[0,0,15,30,45,ri(1,59)][ri(0,5)]})}
+};
+function nItem(kind,v){
+  if(kind==="Prices"){
+    const reais=v.r===0?"":(v.r===1?"um real":ptNum(v.r)+" reais");
+    const cent=v.c?(ptNum(v.c)+(v.c===1?" centavo":" centavos")):"";
+    return {show:"R$ "+v.r+","+String(v.c).padStart(2,"0"),words:[reais,cent].filter(Boolean).join(" e "),
+      key:v.r*100+v.c,accept:s=>{const d=s.replace(/[^\d]/g,"");return d===String(v.r*100+v.c)||d===v.r+String(v.c).padStart(2,"0")||(v.c===0&&d===String(v.r))}};
+  }
+  if(kind==="Times"){
+    let hw;
+    if(v.h===0)hw="meia-noite";else if(v.h===12)hw="meio-dia";
+    else hw=ptNum(v.h,true);
+    let w;
+    if(v.m===0)w=(v.h===0||v.h===12)?hw:hw+(v.h===1?" hora":" horas");
+    else w=hw+" e "+ptNum(v.m);
+    const show=String(v.h).padStart(2,"0")+":"+String(v.m).padStart(2,"0");
+    return {show,words:w,key:v.h*100+v.m,accept:s=>{const d=s.replace(/[^\d]/g,"");return d!==""&&parseInt(d,10)===v.h*100+v.m}};
+  }
+  return {show:String(v.n),words:ptNum(v.n),key:v.n,accept:s=>{const d=s.replace(/[^\d]/g,"");return d!==""&&parseInt(d,10)===v.n}};
+}
+function nDistract(kind,v){
+  const out=[],seen=new Set([JSON.stringify(v)]);
+  const push=x=>{const k=JSON.stringify(x);if(!seen.has(k)){seen.add(k);out.push(x)}};
+  let guard=0;
+  while(out.length<3&&guard++<200){
+    if(kind==="Prices"){
+      const r=Math.max(1,v.r+[1,-1,10,-10,0,0][ri(0,5)]),c=[v.c,v.c,50,90,0,25][ri(0,5)];push({r,c});
+    }else if(kind==="Times"){
+      const h=(v.h+[1,-1,0,0,12,2][ri(0,5)]+24)%24,m=[v.m,15,30,45,0][ri(0,4)];push({h,m});
+    }else{
+      const n=v.n,cands=[n+1,n-1,n+10,n-10,n+100,n-100,n+2,
+        parseInt(String(n).split("").reverse().join(""),10)];
+      const x=cands[ri(0,cands.length-1)];if(x>=0&&x<=9999)push({n:x});
+    }
+  }
+  return out;
+}
+let nKind=store.get("bv-nkind","0–100"),nMode="read",nCur=null,nScore=0,nTotal=0,nStreak=0,nDone=false;
+const nRangesEl=document.getElementById("n-ranges"),nCard=document.getElementById("n-card");
+function renderNRanges(){nRangesEl.innerHTML="";Object.keys(NRANGES).forEach(k=>{const b=el("button","chip",k);
+  b.setAttribute("aria-pressed",k===nKind);b.onclick=()=>{nKind=k;store.set("bv-nkind",k);renderNRanges();nNext()};nRangesEl.append(b)})}
+const nmRead=document.getElementById("nm-read"),nmListen=document.getElementById("nm-listen");
+if(!canSpeak)nmListen.hidden=true;
+nmRead.onclick=()=>{nMode="read";nmRead.setAttribute("aria-pressed",true);nmListen.setAttribute("aria-pressed",false);nNext()};
+nmListen.onclick=()=>{nMode="listen";nmRead.setAttribute("aria-pressed",false);nmListen.setAttribute("aria-pressed",true);nNext()};
+function nMeter(){return el("div","meter",`<span>${nScore} / ${nTotal} correct</span><span>Streak ${nStreak}</span>`)}
+function nResult(ok,fb){
+  nTotal++;if(ok){nScore++;nStreak++}else nStreak=0;nDone=true;
+  fb.innerHTML=(ok?`<span style="color:var(--good)">Certo!</span>`:`<span style="color:var(--bad)">Quase.</span>`)+
+    ` <span class="note"><b>${nCur.show}</b> = ${nCur.words}</span>`;
+  speak(nCur.words);
+  nCard.querySelector(".meter").replaceWith(nMeter());
+  const nx=el("button","btn","Next");nx.style.marginTop="14px";nx.onclick=nNext;nCard.append(nx);nx.focus();
+}
+function nNext(){
+  const v=NRANGES[nKind].gen();nCur=nItem(nKind,v);nDone=false;nCard.innerHTML="";
+  nCard.append(nMeter());
+  const fb=el("div","feedback");
+  if(nMode==="read"){
+    const head=el("div","prompt");head.append(el("div","numbig",nCur.show));
+    const s=sayBtn(()=>nCur.words,"Hear it");if(s)head.append(s);
+    const opts=shuffle([nCur,...nDistract(nKind,v).map(x=>nItem(nKind,x))]);
+    const grid=el("div","opts nopts");
+    opts.forEach(o=>{const b=el("button","opt",o.words);b.onclick=()=>{
+      if(nDone)return;[...grid.children].forEach((x,k)=>{x.disabled=true;if(opts[k].key===nCur.key)x.classList.add("good")});
+      const ok=o.key===nCur.key;if(!ok)b.classList.add("bad");nResult(ok,fb)};grid.append(b)});
+    nCard.append(head,el("div","hint","Pick the Portuguese words for this "+(nKind==="Prices"?"price":nKind==="Times"?"time":"number")+"."),grid,fb);
+  }else{
+    const play=el("button","btn ghost listenbtn",SPK+"<span>Play again</span>");play.onclick=()=>speak(nCur.words);
+    const form=el("form","row listenform");
+    const inp=el("input");inp.id="n-input";inp.type="text";inp.inputMode="numeric";inp.autocomplete="off";
+    inp.placeholder=nKind==="Prices"?"e.g. 25,50":nKind==="Times"?"e.g. 14:30":"Type the number";
+    const go=el("button","btn","Check");go.type="submit";
+    form.append(inp,go);
+    form.onsubmit=e=>{e.preventDefault();if(nDone||!inp.value.trim())return;inp.disabled=true;go.disabled=true;
+      const ok=nCur.accept(inp.value);inp.classList.add(ok?"good":"bad");nResult(ok,fb)};
+    nCard.append(el("div","hint","Listen and type what you hear."),play,form,fb);
+    setTimeout(()=>{speak(nCur.words);inp.focus()},150);
+  }
+}
+renderNRanges();nNext();
 
 /* ---------- Basics ---------- */
 const sEl=document.getElementById("sounds");
